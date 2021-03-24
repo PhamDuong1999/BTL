@@ -1,0 +1,84 @@
+﻿@model List<DKKD.MODELS.SanPham>
+<table style="width:100%;height:100%;" id="tblDisplayDaXoa" class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="text-align:center;width:5%;">STT</th>
+            <th style="text-align:center;width:25%;">Tên sản phẩm</th>
+            <th style="text-align:center;width:15%;">Danh mục</th>
+            <th style="text-align:center;width:15%;">Nhà cung cấp</th>
+            <th style="width:30%">Ảnh</th>
+            <th style="text-align:center;width:10%">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var item = Model[i];
+            <tr>
+                <td style="text-align:center;width:5%;">@(i+1)</td>
+                <td style="width:25%;">@item.TenSP</td>
+                <td style="width:15%;">@item.TenDM</td>
+                <td style="width:15%;">@item.TenNCC</td>
+                
+                <td style="width:30%;">
+                    <img src="@item.Avatar" style="max-width: 80%; max-height: 100px;" class="lightbox-image" alt="@item.TenSP" />
+                </td>
+                <td style="text-align:center;width:20%;">
+                    <a href="javascript:;" onclick="openRevert(@item.ID)"><i class="fas fa-trash-restore" style="color:black"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    var tblDisplay = $('#tblDisplayDaXoa');
+    $(document).ready(function () {
+        setDataTable();
+    });
+
+    function setDataTable() {
+        tblDisplay.DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "pagingType": "full_numbers",
+            "searching": true,
+            "ordering": true,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true,
+            "sDom": 'lrtip',
+            order:[],
+            "columnDefs": [
+                { "orderable": false, "targets": 1 },
+                { "orderable": false, "targets": 2 },
+                { "orderable": false, "targets": 3 },
+            ],
+            "language": {
+                "emptyTable": "Không tìm thấy dữ liệu",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Trang tiếp",
+                    "previous": "Trang trước"
+                }
+            }
+        });
+    }
+    function openRevert(id) {
+        if (confirm("Bạn có muốn khôi phục dữ liệu")) {
+            $.ajax({
+                url: urlDomain + "/revert",
+                data: {
+                    id:id
+                },
+                method: "Post",
+                success: function (response) {
+                    showAlert(response.message, 2)
+                    var name = frmFilter.find("#txtName").val();
+                   
+                    getData(name, 3);
+                }
+            });
+        }
+    }
+</script>

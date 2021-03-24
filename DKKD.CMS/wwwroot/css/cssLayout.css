@@ -1,0 +1,28 @@
+﻿body {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size:13px !important;
+}
+.textSize {
+    font-size: 13px !important;
+}
+.icon-size {
+    font-size: 22px;
+    color: darkslateblue;
+}
+.icon-size:hover {
+    color: black;
+}
+#iconTop {
+    color: #6c757d;
+    font-size:14px;
+}
+#iconTop:hover {
+    color: darkslateblue;
+}
+#titleCardTop {
+    color: #6c757d !important;
+    font-weight:bold;
+}
+#card-header{
+ height:40px;
+}

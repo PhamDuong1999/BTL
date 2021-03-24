@@ -1,0 +1,101 @@
+﻿@using DKKD.MODELS;
+@{ 
+    var lsth = ViewData["lsth"] as List<NhaCungCap>;
+    var lsdm = ViewData["lsdm"] as List<DanhMuc>;
+}
+<!-- header-section-->
+<div class="header-wrapper">
+    <div class="container">
+        <div class="row">
+            <!-- logo -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8">
+                <div class="logo">
+                    <a href="/"><img src="~/img/logo.png" alt=""> </a>
+                </div>
+            </div>
+            <!-- /.logo -->
+            <!-- search -->
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="search-bg">
+                    <input type="text" id="inpsearch" class="form-control" placeholder="Search Here">
+                    <button id="search"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <!-- /.search -->
+            <!-- account -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <div class="account-section" style="float:right">
+                    <ul>
+                        <li>
+                            <a href="/Cart" class="title"><i class="fa fa-2x fa-shopping-cart"></i><span class="a"></span></a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.account -->
+            </div>
+            <!-- search -->
+        </div>
+    </div>
+    <!-- navigation -->
+    <div class="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!-- navigations-->
+                    <div id="navigation">
+                        <ul>
+                            <li class="active"><a href="/">Trang chủ</a></li>
+
+                            <li class="has-sub">
+                                <a href="#">Thương hiệu</a>
+                                <ul>
+                                    @foreach (var item in lsth)
+                                    {
+                                        <li><a href='/danh-sach-san-pham?name=&idth=@item.ID&iddm=-1'>@item.TenNCC</a></li>
+                                    }
+
+                                </ul>
+                            </li>
+                            <li class="has-sub">
+                                <a href="#">Danh mục</a>
+                                <ul>
+                                    @foreach (var item in lsdm)
+                                    {
+                                        <li><a href='/danh-sach-san-pham?name=&idth=-1&iddm=@item.ID'>@item.TenDM</a></li>
+                                    }
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.navigations-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /. header-section-->
+<script>
+    $(document).ready(function () {
+        search();
+        $.ajax({
+            url: "/Cart/Total",
+            method: "GET",
+            data: {},
+            success: function (rs) {
+                if (rs.data == 0) {
+                    $(".a").html("");
+                } else {
+                    $(".a").html("");
+                    $(".a").html('<sup class="cart-quantity">' + rs.data + '</sup>');
+                }
+            }
+        })
+    })
+    function search() {
+        $("#search").on("click", function () {
+            var name = $("#inpsearch").val();
+            $(location).attr('href', `/danh-sach-san-pham/?name=${name}`)
+        })
+    }
+</script>

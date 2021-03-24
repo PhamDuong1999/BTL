@@ -1,0 +1,15 @@
+﻿.boxHome{
+    height:180px;
+    margin:0px;
+    width:360px;
+}
+.boxHome h3{
+    text-align:center
+}
+#icon-box-home i{
+    font-size: 40px !important;
+    margin-top:-5%;
+}
+#thongKeHome{
+    padding-left:15%;
+}

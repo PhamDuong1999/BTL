@@ -1,0 +1,57 @@
+﻿#nav_main_header {
+    /*background: #085078;*/ /* fallback for old browsers */
+    /*background: -webkit-linear-gradient(to right, #85D8CE, #085078);*/ /* Chrome 10-25, Safari 5.1-6 */
+    /*background: linear-gradient(to right, #85D8CE, #085078);*/ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /*background: #314755;*/ /* fallback for old browsers */
+    /*background: -webkit-linear-gradient(to right, #26a0da, #314755);*/ /* Chrome 10-25, Safari 5.1-6 */
+    /*background: linear-gradient(to right, #26a0da, #314755);*/ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    height: 40px;
+/*    background: #314755;  fallback for old browsers 
+    background: -webkit-linear-gradient(to right, #26a0da, #314755);
+    background: linear-gradient(to right, #007bff, #007bff);
+    opacity:.8;*/
+    background: linear-gradient(to right, #243B55, #141E30);
+}
+#div_right_account {
+   /* margin-top: 30%;
+    padding-left: 20px;
+    padding-right: 8px;*/
+}
+@media only screen and (max-width: 1000px) {
+    #div_right_account {
+        /*padding-left: 0px;
+        padding-right: 0px;
+        margin-top: -53%;
+        margin-left: 92%;*/
+    }
+}
+#div_left_sidebar {
+    background: #141E30; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #243B55, #141E30); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+#div_left_sidebar_scrool {
+    overflow: auto;
+    height: 82%;
+}
+    #div_left_sidebar strong, p, i {
+        color: white;
+    }
+.active-v2{
+    background-color:#26a0da !important;
+}
+.active-v3 {
+    background-color: #ff6a00 !important;
+}
+.active-v4 {
+    background-color: #4b19dd !important;
+}
+.active-v5 {
+    background-color: #141E30 !important;
+    border-radius:5px;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.subItem {
+   /* border-bottom: solid 1px #808080;*/
+}

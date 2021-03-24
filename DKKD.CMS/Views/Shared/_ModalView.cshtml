@@ -1,0 +1,221 @@
+﻿<div class="modal modal-info fade in" id="loading">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal modal-warning fade" id="modal-warning">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Đóng</button>
+                <button type="button" data-dismiss="modal" id="btnAccept" class="btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal" id="modal-form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:cornflowerblue">
+                <h5 class="modal-title w-100 text-center" style="font-weight:bold;color:white"></h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer" style="background-color:azure">
+                <button type="button" class="btn btn-primary" id="btnSave"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu</button>
+                <button type="button" class="btn btn-danger pull-left" id="btnClose"><i class="fa fa-sign-out" aria-hidden="true"></i>Thoát</button>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal" id="modal-view">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:cornflowerblue">
+                <h5 class="modal-title w-100 text-center" style="font-weight:bold;color:white"></h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer" style="background-color:azure">
+                <button type="button" class="btn btn-danger pull-left" id="btnClose"><i class="fa fa-sign-out" aria-hidden="true"></i>Thoát</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal" id="modal-size-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:cornflowerblue">
+                <h5 class="modal-title w-100 text-center" style="font-weight:bold;color:white"></h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer" style="background-color:azure">
+                <button type="button" class="btn btn-primary" id="btnSave"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu</button>
+                <button type="button" class="btn btn-danger pull-left" id="btnClose"><i class="fa fa-sign-out" aria-hidden="true"></i>Thoát</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal" id="modal-delete">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+            </div>
+            <div class="text-center mb-2">
+                <button type="button" class="btn btn-info btn-sm" id="btnClose"><i class="fa fa-sign-out" aria-hidden="true"></i>Thoát</button>
+                <button type="button" class="btn btn-danger btn-sm" id="btnDelete"><i class="fa fa-floppy-o" aria-hidden="true"></i>Xóa</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal" id="modal-confirm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+            </div>
+            <div class="text-center mb-2">
+                <button type="button" class="btn btn-info btn-sm" id="btnClose"><i class="fa fa-sign-out" aria-hidden="true"></i>Thoát</button>
+                <button type="button" class="btn btn-success btn-sm" id="btnConfirm"><i class="fa fa-floppy-o" aria-hidden="true"></i>Phê duyệt</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal" id="modal-lock">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+            </div>
+            <div class="text-center mb-2">
+                <button type="button" class="btn btn-info btn-sm" id="btnClose"><i class="fa fa-sign-out" aria-hidden="true"></i>Thoát</button>
+                <button type="button" class="btn btn-warning btn-sm" id="btnLock"><i class="fa fa-floppy-o" aria-hidden="true"></i>Khóa</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal modal-info fade in" id="loading">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script>
+    $('#modal-form').find('#btnClose').click(function () {
+        $('#modal-form').hide();
+        $('#modal-form').find('#btnSave').show()
+    })
+
+    $('#modal-delete').find('#btnClose').click(function () {
+        $('#modal-delete').hide();
+        $('#modal-delete').find('#btnDelete').show()
+    })
+    $('#modal-confirm').find('#btnClose').click(function () {
+        $('#modal-confirm').hide();
+        $('#modal-confirm').find('#btnConfirm').show()
+    })
+    $('#modal-view').find('#btnClose').click(function () {
+        $('#modal-view').hide();
+    })
+    $('#modal-lock').find('#btnClose').click(function () {
+        $('#modal-lock').hide();
+        $('#modal-lock').find('#btnLock').show()
+    })
+    $('#modal-size-lg').find('#btnClose').click(function () {
+        $('#modal-size-lg').hide();
+        $('#modal-size-lg').find('#btnSave').show()
+    })
+    function showContentModal(content, title) {
+        var modal = $('#modal-form');
+        modal.find('.modal-title').html('')
+        modal.find('.modal-title').html(title)
+        modal.find('.modal-body').html('')
+        modal.find('.modal-body').html(content)
+        modal.show();
+    }
+    function showViewModal(content, title) {
+        var modal = $('#modal-view');
+        modal.find('.modal-title').html('')
+        modal.find('.modal-title').html(title)
+        modal.find('.modal-body').html('')
+        modal.find('.modal-body').html(content)
+        modal.show();
+    }
+    function showLgContent(content, title) {
+        var modal = $('#modal-size-lg');
+        modal.find('.modal-title').html('')
+        modal.find('.modal-title').html(title)
+        modal.find('.modal-body').html('')
+        modal.find('.modal-body').html(content)
+        modal.show();
+    }
+    function showDeleteModal(content) {
+        var modal = $('#modal-delete');
+        modal.find('.modal-body').html('')
+        modal.find('.modal-body').html(content)
+        modal.show();
+    }
+    function showConfirmModal(content) {
+        var modal = $('#modal-confirm');
+        modal.find('.modal-body').html('')
+        modal.find('.modal-body').html(content)
+        modal.show();
+    }
+    function showLockModal(content) {
+        var modal = $('#modal-lock');
+        modal.find('.modal-body').html('')
+        modal.find('.modal-body').html(content)
+        modal.show();
+    }
+    function hideContentModal() {
+        $('#modal-form').hide();
+    }
+    function hideViewModal() {
+        $('#modal-view').hide();
+    }
+    function hideDeleteModal() {
+        $('#modal-delete').hide();
+    }
+    function hideConfirmModal() {
+        $('#modal-confirm').hide();
+    }
+    function hideLockModal() {
+        $('#modal-lock').hide();
+    }
+    function hideLgModal() {
+        $('#modal-size-lg').hide();
+    }
+</script>

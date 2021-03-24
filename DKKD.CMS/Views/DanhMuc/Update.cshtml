@@ -1,0 +1,68 @@
+﻿@model DKKD.MODELS.DanhMuc
+<div id="frmUpdate" class="form-horizontal" style="height:450px;overflow:auto">
+    <input type="hidden" value="@Model.ID" id="hdId" />
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Tên danh mục</label>
+            <div class="col-md-8">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên nhà cung cấp" value="@Model.TenDM">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4">Kích hoạt</label>
+            <div class="col-md-8">
+                <input id="ckbStatus" type="checkbox" class="custom-control" value="@Model.TrangThai">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var frmUpdate = $('#frmUpdate');
+    $(document).ready(function () {
+        addRequired(frmUpdate);
+        bsCustomFileInput.init();
+        setStatus();
+
+    });
+    //$('#modal-form').find('.modal-dialog').addClass("modal-lg")
+    $('#modal-form').find('#btnSave').off("click").on('click', function (e) {
+        e.preventDefault();
+        update();
+    });
+    function setStatus() {
+        if (frmUpdate.find('#ckbStatus').val() == 1) {
+            frmUpdate.find('#ckbStatus').prop('checked', true);
+        }
+    }
+    function update() {
+        if (ValidateForm(frmUpdate)) {
+            return;
+        }
+        showLoading();
+        $.ajax({
+            url: url + "/create-or-update",
+            method: "POST",
+            data: {
+                ID: frmUpdate.find('#hdId').val(),
+                TenDM: frmUpdate.find('#txtName').val(),
+                TRANGTHAI: frmUpdate.find('#ckbStatus').prop('checked') ? 1 : 2
+            }
+            , success: function (response) {
+                hideLoading()
+                if (response.result) {
+                    showAlert(response.message, 2)
+                    getData("", -1);
+                    hideContentModal()
+
+                } else {
+                    showAlert(response.message)
+                }
+            }
+        })
+    }
+</script>

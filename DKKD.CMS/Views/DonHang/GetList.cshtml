@@ -1,0 +1,145 @@
+﻿@using DKKD.UTILS
+@model List<DKKD.MODELS.DonHang>
+<table style="width:100%;height:100%;" id="tblDisplay" class=" table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="text-align:center;width:5%;">STT</th>
+            <th style="text-align:center;width:15%;">Tên khách hàng</th>
+            <th style="text-align:center;width:20%;">Địa chỉ</th>
+            <th style="text-align:center;width:10%;">Số điện thoại</th>
+            <th style="text-align:center;width:10%;">Email</th>
+            <th style="text-align:center;width:20%;">Ghi chú</th>
+            <th style="text-align:center;width:10%;">Tổng tiền</th>
+            <th style="text-align:center;width:10%">Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        //@foreach (var item in Model)
+        {
+            var item = Model[i];
+            <tr>
+                <td style="text-align:center;width:5%;">@(i+1)</td>
+                <td style="width:15%;">
+                    <a href="javascript:;" onclick="showTT(@item.ID)">@item.TenKH</a>
+                </td>
+                <td style="width:20%;">@item.DiaChi</td>
+                <td style="width:10%;">@item.SDT</td>
+                <td style="width:10%;">@item.Email</td>
+                <td style="width:20%;">@item.Note</td>
+                @{ 
+                    var tien = string.Format("{0:0,0}", item.TongTienTT);
+                }
+            <td style="width:10%;">@tien₫</td>
+                <td style="text-align:center;width:10%">
+
+                    @if (item.TrangThai == 1)
+                    {
+                        <a href="javascript:;" onclick="Change(2,@item.ID)" title="Đã giao hàng"><i class="fas fa-check" style="color:black"></i></a>
+                    }
+                    @if (item.TrangThai == 2)
+                    {
+                        <a href="javascript:;" onclick="Change(1,@item.ID)" title="Đang chờ duyệt"><i class="fas fa-lock" style="color:black"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    var tblDisplay = $('#tblDisplay');
+    $(document).ready(function () {
+        setDataTable();
+
+        tblDisplay.find('a[data-type="update"]').each(function () {
+            var dataId = $(this).attr("data-id");
+            $(this).click(function () {
+                openUpdate(dataId);
+
+            })
+        })
+        tblDisplay.find('a[data-type="delete"]').each(function () {
+            var dataId = $(this).attr("data-id");
+            $(this).click(function () {
+                openDelete(dataId);
+
+            })
+        })
+    });
+    function setDataTable() {
+        tblDisplay.DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "pagingType": "full_numbers",
+            "searching": true,
+            "ordering": true,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true,
+            "sDom": 'lrtip',
+            order: [],
+            columnDefs: [
+                
+                //{
+                //    targets: [4],
+                //    type: 'num',
+                //    render: function (data, type, full, meta) {
+                //        if (type === 'filter' || type === 'sort') {
+                //            var api = new $.fn.dataTable.Api(meta.settings);
+                //            var td = api.cell({ row: meta.row, column: meta.col }).node();
+                //            data = $('select, input[type="number"]', td).val();
+                //        }
+
+                //        return data;
+                //    }
+                //},
+                { "orderable": false, "targets": 1 },
+                { "orderable": false, "targets": 2 },
+                { "orderable": false, "targets": 3 },
+                { "orderable": false, "targets": 4 },
+                { "orderable": false, "targets": 5 },
+                { "orderable": false, "targets": 7 },
+
+
+
+            ],
+            "language": {
+                "emptyTable": "Không tìm thấy dữ liệu",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Trang tiếp",
+                    "previous": "Trang trước"
+                }
+            }
+        });
+    }
+    function Change(status, id) {
+        $.ajax({
+            url: url + "/change-status/?status=" + status + "&id=" + id,
+            method: "POST",
+            data: {
+            }
+            , success: function (response) {
+                if (response.result == true) {
+                    showAlert(response.message, 2);
+                    getData("", -1);
+                } else {
+                    showAlert(response.message, 2);
+                }
+            }
+        })
+    }
+    function showTT(id) {
+        $.ajax({
+            url: url + "/get-list-ctdh/?id=" + id,
+            method: "GET",
+            data: {
+            }
+            , success: function (response) {
+                showViewModal(response, "CHI TIẾT ĐƠN HÀNG")
+                $('#modal-view').find('.modal-dialog').addClass("modal-lg");
+            }
+        });
+    }
+</script>

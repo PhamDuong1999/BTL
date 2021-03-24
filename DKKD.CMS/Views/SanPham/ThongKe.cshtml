@@ -1,0 +1,47 @@
+﻿@using DKKD.UTILS
+@model List<DKKD.MODELS.SanPham>
+<table style="width:100%;height:100%;" id="tblDisplay" class=" table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="text-align:center;width:5%;">STT</th>
+            <th style="text-align:center;width:25%;">Tên sản phẩm</th>
+            <th style="text-align:center;width:15%;">Danh mục</th>
+            <th style="text-align:center;width:15%;">Nhà cung cấp</th>
+            <th style="width:20%">Ảnh</th>
+            <th style="text-align:center;width:10%">Trạng thái</th>
+            <th style="text-align:center;width:10%">Số lượng đã bán</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var item = Model[i];
+            <tr>
+                <td style="text-align:center;width:5%;">@(i+1)</td>
+                <td style="width:25%;">@item.TenSP</td>
+                <td style="width:15%;">@item.TenDM</td>
+                <td style="width:15%;">@item.TenNCC</td>
+
+                <td style="width:30%;">
+                    <img src="@item.Avatar" style="max-width: 80%; max-height: 100px;" class="lightbox-image" alt="@item.TenSP" />
+                </td>
+                <td style="text-align:center;width:10%">
+
+                    @if (item.SoLuong - item.sldaban > 0)
+                    {
+                        <span>Còn hàng</span><br/>
+                    <span>(<strong>@(item.SoLuong-item.sldaban)/@item.SoLuong</strong>)</span>
+                    }
+                    else
+                    {
+                        <span>hết hàng</span>
+                    }
+
+                </td>
+                <td style="text-align:center;width:10%;">
+                    @item.sldaban
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

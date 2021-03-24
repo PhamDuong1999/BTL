@@ -1,0 +1,200 @@
+﻿<div id="frmCreate" class="form-horizontal" style="height:450px;overflow:auto">
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Danh mục</label>
+            <div class="col-md-8">
+                <select class="form-control show-tick select2-blue" name="danhmuc" id="sldm">
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Nhà cung cấp</label>
+            <div class="col-md-8">
+                <select class="form-control show-tick select2-blue" name="nhacungcap" id="slncc">
+                    <option value="">-- Chọn nhà cung cấp --</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Tên sản phẩm</label>
+            <div class="col-md-8">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên sản phẩm">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Giới thiệu</label>
+            <div class="col-md-8">
+                <textarea rows="5" type="text" class="form-control" id="txtGT" placeholder="Giới thiệu"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Mô tả</label>
+            <div class="col-md-8">
+                <textarea rows="5" type="text" class="form-control" id="txtMota" placeholder="Mô tả"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Số lượng</label>
+            <div class="col-md-8">
+                <input type="number" required class="form-control" id="txtSL" placeholder="Số lượng">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Đơn giá</label>
+            <div class="col-md-8">
+                <input type="number" required class="form-control" id="txtDG" placeholder="Đơn giá">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Khuyến mãi(%)</label>
+            <div class="col-md-8">
+                <input type="number" required class="form-control" id="txtSale" placeholder="Khuyến mãi">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label id="lbAnhDaiDien" class="col-md-4 col-form-label">Ảnh đại diện</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" accept="image/*" name="files" id="fileAnhDD">
+                        <label class="custom-file-label" for="fileAnhDD">Chọn file</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label id="lbStatus" class="col-md-4">Trạng thái</label>
+            <div class="col-md-8">
+                <input id="ckbStatus" type="checkbox" class="custom-control">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var frmCreate = $('#frmCreate');
+    //var urlDomain=
+    $(document).ready(function () {
+        bsCustomFileInput.init();
+        addRequired(frmCreate);
+        getDM();
+        getNCC();
+    });
+    $('#modal-form').find('#btnSave').off("click").on('click', function (e) {
+        e.preventDefault();
+        create();
+    });
+    function create() {
+        if (ValidateForm(frmCreate)) {
+            return;
+
+        }
+
+        var fileUpload = frmCreate.find('#fileAnhDD').get(0)
+        if (fileUpload.files.length == 0) {
+            showAlert('Chưa có tệp tin ảnh');
+            return false;
+        }
+
+        var filePath = fileUpload.value; //validation file
+
+        var allowedExtensions =
+            /(\.jpg|\.jpeg|\.png|\.gif|\tiff|\raw|\psd)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            showAlert('Không đúng định dạng ảnh');
+            fileUpload.value = '';
+            return false;
+        }
+        else {
+            showLoading()
+            var files = fileUpload.files;
+            var fileData = new FormData();
+            var Obj = {
+                TenSP: frmCreate.find('#txtName').val(),
+                GioiThieu: frmCreate.find('#txtGT').val(),
+                MoTa: frmCreate.find('#txtMota').val(),
+                SoLuong: frmCreate.find('#txtSL').val(),
+                DonGia: frmCreate.find('#txtDG').val(),
+                Sale: frmCreate.find('#txtSale').val(),
+                MaDM: frmCreate.find('#sldm').val(),
+                MaNCC: frmCreate.find('#slncc').val(),
+                TrangThai: frmCreate.find('#ckbStatus').prop("checked") ? 1 : 2
+
+            }
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append("files", files[i]);
+                fileData.append('NCCArr', JSON.stringify(Obj));
+            }
+
+            $.ajax({
+                url: url + "/create",
+                method: "POST",
+                data: fileData,
+                processData: false,
+                contentType: false
+                , success: function (response) {
+                    hideLoading()
+                    if (response.result) {
+                        showAlert(response.message, 2)
+                        getData( "", -1);
+                        hideContentModal()
+                    } else {
+                        showAlert(response.message)
+                    }
+                }
+            });
+        }
+
+    }
+    function getDM() {
+        var cbDM = frmCreate.find("#sldm")
+        $.ajax({
+            url: url + "/get-dm",
+            method: "GET"
+            , success: function (response) {
+                console.log(response);
+                $.each(response.data, function (i, itemMenu) {
+                    if (i >= 0) {
+                        var newOption = new Option(itemMenu.tenDM, itemMenu.id);
+                        cbDM.append(newOption);
+                    }
+                })
+            }
+        });
+    }
+    function getNCC() {
+        var cbNCC = frmCreate.find("#slncc")
+        $.ajax({
+            url: url + "/get-ncc",
+            method: "GET"
+            , success: function (response) {
+                console.log(response);
+                $.each(response.data, function (i, itemMenu) {
+                    if (i >= 0) {
+                        var newOption = new Option(itemMenu.tenNCC, itemMenu.id);
+                        cbNCC.append(newOption);
+                    }
+                })
+            }
+        });
+    }
+</script>

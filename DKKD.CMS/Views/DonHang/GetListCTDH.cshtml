@@ -1,0 +1,33 @@
+﻿@model List<DKKD.MODELS.CartItem>
+<div style="overflow-y:auto;max-height:400px">
+    <table style="width:100%;height:100%;" id="tblDisplay1" class=" table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th style="text-align:center;width:10%;">STT</th>
+                <th style="text-align:center;width:25%;">Tên sản phẩm</th>
+                <th style="text-align:center;width:25%;">Ảnh</th>
+                <th style="text-align:center;width:20%;">Số lượng</th>
+                <th style="text-align:center;width:20%;">Đơn giá</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            //@foreach (var item in Model)
+            {
+                var item = Model[i];
+                <tr>
+                    <td style="text-align:center;width:5%;">@(i+1)</td>
+                    <td style="width:25%;">@item.TenSP</td>
+                    <td style="width:25%;">
+                        <img src="@item.Avatar" style="max-width: 80%; max-height: 100px;" class="lightbox-image" alt="@item.TenSP" />
+                    </td>
+                    <td style="width:20%;">@item.SoLuong</td>
+                    @{
+                        var tien = string.Format("{0:0,0}", item.DonGia);
+                    }
+                    <td style="width:10%;">@tien₫</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

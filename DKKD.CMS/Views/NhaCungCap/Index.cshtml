@@ -1,0 +1,97 @@
+﻿@using DKKD.UTILS
+
+<div class="card">
+    <div class="card-header border-0">
+        <div class="row" id="frmFilter">
+            <div class="col-lg-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input id="txtName" type="text" class="form-control" placeholder="Tìm kiếm theo từ khóa">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <select id="drStatus" class="form-control">
+                                <option value="@((int)StatusEnum.All)">@Extensions.GetEnumDescription(StatusEnum.All)</option>
+                                <option value="@((int)StatusEnum.Active)">@Extensions.GetEnumDescription(StatusEnum.Active)</option>
+                                <option value="@((int)StatusEnum.Unactive)">@Extensions.GetEnumDescription(StatusEnum.Unactive)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="form-group" style="float:right">
+                    <button id="btnSearch" class="btn btn-primary">
+                        <i class="fas fa-search mr-2" aria-hidden="true"></i>Tìm kiếm
+                    </button>
+                    <button id="btnCreate" class=" btn btn-success">
+                        <i class="fas fa-plus mr-2" aria-hidden="true"></i>Thêm mới
+                    </button>
+                    <button id="btnThungRac" class=" btn btn-info">
+                        <i class="fas fa-trash mr-2" aria-hidden="true"></i>Danh sách đã Xóa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-header -->
+</div>
+<!-- /.card -->
+<div id="dtTable"></div>
+@*</div>
+    </div>*@
+<script>
+    var frmFilter = $('#frmFilter');
+    var url = "/nha-cung-cap";
+    var take = 10;
+    var skip = 0;
+
+    $(document).ready(function () {
+        getData("", -1);
+        searching();
+        frmFilter.find('#btnCreate').on('click', function () {
+            openCreate();
+        });
+        frmFilter.find('#btnThungRac').on('click', function () {
+            openViewDaXoa();
+        });
+    });
+    function searching() {
+        frmFilter.find("#btnSearch").on('click', function () {
+            var name = frmFilter.find("#txtName").val();
+            var status = frmFilter.find("#drStatus").val();
+            getData( name, status);
+        });
+    }
+    function getData( name, status) {
+        showLoading()
+        $.ajax({
+            url: url + "/get-list/?name=" + name + "&status=" + status,
+            method: "GET",
+            data: {
+                title: frmFilter.find('#txtName').val(),
+                take: take,
+                skip: skip
+            }
+            , success: function (response) {
+                $('#dtTable').html(response);
+                hideLoading()
+            }
+        });
+    }
+    function openCreate() {
+        $.ajax({
+            url: url + "/create",
+            method: "Get",
+            success: function (response) {
+                showContentModal(response, "TẠO MỚI NHÀ CUNG CẤP");
+            }
+        });
+    }
+    function openViewDaXoa() {
+
+        $(location).attr('href', `${url}/danh-sach-da-xoa`)
+    }
+</script>

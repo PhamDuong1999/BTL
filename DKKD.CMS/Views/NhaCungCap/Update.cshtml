@@ -1,0 +1,143 @@
+﻿@model DKKD.MODELS.NhaCungCap
+<div id="frmUpdate" class="form-horizontal" style="height:450px;overflow:auto">
+    <input type="hidden" value="@Model.ID" id="hdId" />
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4" required>Tên nhà cung cấp</label>
+            <div class="col-md-8">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên nhà cung cấp" value="@Model.TenNCC">
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label id="lbAnhDaiDien" class="col-md-4 col-form-label">Ảnh đại diện</label>
+            <div class="col-md-8">
+                <div class="col-md-12">
+                    <img src="@Model.Logo" id="imgAdd" style="width:50%;height:50%" class="lightbox-image" alt="@Model.TenNCC" />
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" accept="image/*" name="files" id="fileAnhDD">
+                            <label class="custom-file-label" for="fileAnhDD">Chọn file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <label class="col-md-4">Kích hoạt</label>
+            <div class="col-md-8">
+                <input id="ckbStatus" type="checkbox" class="custom-control" value="@Model.TrangThai">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var frmUpdate = $('#frmUpdate');
+    $(document).ready(function () {
+        addRequired(frmUpdate);
+        bsCustomFileInput.init();
+        setStatus();
+
+    });
+    //$('#modal-form').find('.modal-dialog').addClass("modal-lg")
+    $('#modal-form').find('#btnSave').off("click").on('click', function (e) {
+        e.preventDefault();
+        update();
+    });
+    function setStatus() {
+        if (frmUpdate.find('#ckbStatus').val() == 1) {
+            frmUpdate.find('#ckbStatus').prop('checked', true);
+        }
+    }
+    function update() {
+        if (ValidateForm(frmUpdate)) {
+            return;
+
+        }
+
+        var fileUpload = frmUpdate.find('#fileAnhDD').get(0);
+        if (fileUpload.files.length == 0) {
+            var fileData = new FormData();
+            var Obj = {
+                "ID": frmUpdate.find('#hdId').val(),
+                "TenNCC": frmUpdate.find('#txtName').val(),
+                "Logo": frmUpdate.find('#imgAdd').attr("src"),
+                "TrangThai": frmUpdate.find('#ckbStatus').prop("checked") ? 1 : 2
+            }
+            fileData.append('NCCArr', JSON.stringify(Obj));
+            $.ajax({
+                url: url + "/update",
+                method: "POST",
+                data: fileData,
+                processData: false,
+                contentType: false
+                , success: function (response) {
+                    hideLoading()
+                    if (response.result) {
+                        showAlert(response.message, 2)
+                        getData("", -1);
+                        hideContentModal()
+                    } else {
+                        showAlert(response.message)
+                    }
+                }
+            });
+        }
+        else {
+            var filePath = fileUpload.value; //validation file
+
+            var allowedExtensions =
+                /(\.jpg|\.jpeg|\.png|\.gif|\tiff|\raw|\psd)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                showAlert('Không đúng định dạng ảnh');
+                fileUpload.value = '';
+                return false;
+            }
+            else {
+                showLoading()
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                var Obj = {
+                    "ID": frmUpdate.find('#hdId').val(),
+                    "TenNCC": frmUpdate.find('#txtName').val(),
+                    "TrangThai": frmUpdate.find('#ckbStatus').prop("checked") ? 1 : 2
+
+                }
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append("files", files[i]);
+                    fileData.append('NCCArr', JSON.stringify(Obj));
+                }
+
+                $.ajax({
+                    url: url + "/update",
+                    method: "POST",
+                    data: fileData,
+                    processData: false,
+                    contentType: false
+                    , success: function (response) {
+                        hideLoading()
+                        if (response.result) {
+                            showAlert(response.message, 2)
+                            getData("", -1);
+                            hideContentModal()
+                        } else {
+                            showAlert(response.message)
+                        }
+                    }
+                });
+            }
+
+
+        }
+    }
+
+</script>

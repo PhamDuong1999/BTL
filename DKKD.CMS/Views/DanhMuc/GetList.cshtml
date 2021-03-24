@@ -1,0 +1,132 @@
+﻿@using DKKD.UTILS
+@model List<DKKD.MODELS.DanhMuc>
+<table style="width:100%;height:100%;" id="tblDisplay" class=" table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="text-align:center;width:10%;">STT</th>
+            <th style="text-align:center;width:30%;">Tên danh mục</th>
+            <th style="text-align:center;width:30%">Trạng thái</th>
+            <th style="text-align:center;width:30%">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        //@foreach (var item in Model)
+        {
+            var item = Model[i];
+            <tr>
+                <td style="text-align:center;width:10%;">@(i+1)</td>
+                <td style="width:30%;">@item.TenDM</td>
+                <td style="text-align:center;width:30%">
+
+                    @if (item.TrangThai == 1)
+                    {
+                        <a href="javascript:;" onclick="onActive()"><i class="fas fa-check" style="color:black"></i></a>
+                    }
+                    @if (item.TrangThai == 2)
+                    {
+                        <a href="javascript:;" onclick="onLock()"><i class="fas fa-lock" style="color:black"></i></a>
+                    }
+                </td>
+                <td style="text-align:center;width:30%;">
+                    <a href="javascript:;" onclick="openUpdate(@item.ID)"><i class="fas fa-edit" style="color:black"></i></a>
+                    <a href="javascript:;" onclick="openDelete(@item.ID)"><i class="fas fa-trash-alt" style="color:black"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    var tblDisplay = $('#tblDisplay');
+    $(document).ready(function () {
+        setDataTable();
+
+        tblDisplay.find('a[data-type="update"]').each(function () {
+            var dataId = $(this).attr("data-id");
+            $(this).click(function () {
+                openUpdate(dataId);
+
+            })
+        })
+        tblDisplay.find('a[data-type="delete"]').each(function () {
+            var dataId = $(this).attr("data-id");
+            $(this).click(function () {
+                openDelete(dataId);
+
+            })
+        })
+    });
+    function onActive() {
+        alert("Trường dữ liệu đang ở trạng thái kích hoạt");
+    }
+    function onLock() {
+        alert("Trường dữ liệu đang ở trạng thái khóa");
+    }
+    function onDelete() {
+        alert("Trường dữ liệu đang ở trạng thái xóa");
+    }
+    function setDataTable() {
+        tblDisplay.DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "pagingType": "full_numbers",
+            "searching": true,
+            "ordering": true,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true,
+            "sDom": 'lrtip',
+            order: [],
+            columnDefs: [
+                
+                //{
+                //    targets: [4],
+                //    type: 'num',
+                //    render: function (data, type, full, meta) {
+                //        if (type === 'filter' || type === 'sort') {
+                //            var api = new $.fn.dataTable.Api(meta.settings);
+                //            var td = api.cell({ row: meta.row, column: meta.col }).node();
+                //            data = $('select, input[type="number"]', td).val();
+                //        }
+
+                //        return data;
+                //    }
+                //},
+                { "orderable": false, "targets": 1 },
+                { "orderable": false, "targets": 2 },
+                { "orderable": false, "targets": 3 },
+
+
+
+            ],
+            "language": {
+                "emptyTable": "Không tìm thấy dữ liệu",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Trang tiếp",
+                    "previous": "Trang trước"
+                }
+            }
+        });
+    }
+    function openUpdate(id) {
+        $.ajax({
+            url: url + "/update?id=" + id,
+            method: "Get",
+            success: function (response) {
+                showContentModal(response, "CẬP NHẬT DANH MỤC")
+            }
+        });
+    }
+    function openDelete(id) {
+        console.log(id);
+        $.ajax({
+            url: url + "/delete?id=" + id,
+            method: "Get",
+            success: function (response) {
+                showDeleteModal(response, "Bạn có muốn xóa danh mục ?")
+            }
+        });
+    }
+</script>

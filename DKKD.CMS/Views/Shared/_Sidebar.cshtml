@@ -1,0 +1,109 @@
+﻿<aside class="main-sidebar sidebar-dark-primary elevation-4" id="div_left_sidebar">
+    <!-- Brand Logo -->
+    @*    <a href="/" class="brand-link">
+            <img src="dist/img/logo_stc.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">AdminLTE 3</span>
+        </a>*@
+    <div class="" style="background-color: whitesmoke">
+        <img src="~/dist/img/logo.png" style="width:100%;height:40px;" />
+    </div>
+    <br />
+    <!-- Sidebar -->
+    <div class="sidebar" id="div_left_sidebar_scrool">
+        <!-- Sidebar user panel (optional) -->
+        @*        <div class="user-panel mt-3 pb-3 mb-3 d-flex row">
+                <div class="image col-lg-4">
+                    <img src="~/dist/img/khongcoanh.png" class="img-circle elevation-2" alt="User Image" style="height: auto; width: 3.1rem;">
+                </div>
+                <div class="info col-lg-8">
+                    <div class="row"><a href="#" class="d-block"><strong>Lê Đức Trung</strong></a></div>
+                    <div class="row"><a href="#" class="d-block"><p>Quản lý</p></a></div>
+                </div>
+            </div>*@
+
+
+        <!-- SidebarSearch Form -->
+        @*<div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" style="background-color:white">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>*@
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <!-- Add icons to the links using the .nav-icon class
+    with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="/" class="nav-link">
+                        <i class="fas fa-laptop-house"></i>
+                        <p>
+                            Trang chủ
+                        </p>
+                    </a>
+                </li>
+                <br />
+                <li class="nav-item menu-is-opening">
+                    <a href="/nha-cung-cap/danh-sach" class="nav-link active">
+                        <i class="fas fa-project-diagram"></i>
+                        <p>
+                            Quản lý nhà cung cấp
+                        </p>
+                    </a>
+                </li>
+                <br />
+                <li class="nav-item menu-is-opening">
+                    <a href="/danh-muc/danh-sach" class="nav-link active active-v2">
+                        <i class="fab fa-windows"></i>
+                        <p>
+                            Quản lý danh mục
+                        </p>
+                    </a>
+                </li>
+                <br />
+                <li class="nav-item menu-is-opening">
+                    <a href="/san-pham/danh-sach" class="nav-link active active-v3">
+                        <i class="fab fa-windows"></i>
+                        <p>
+                            Quản lý sản phẩm
+                        </p>
+                    </a>
+                </li>
+                <br />
+                <li class="nav-item menu-is-opening">
+                    <a href="/don-hang/danh-sach" class="nav-link active active-v4">
+                        <i class="fas fa-folder-open"></i>
+                        <p>
+                            Quản lý đơn hàng
+                        </p>
+                    </a>
+                </li>
+                <br />
+                <li class="nav-item menu-is-opening">
+                    <a href="/san-pham/thong-ke" class="nav-link active" style="background-color: #cc3232 !important">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>
+                            Thống kê
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+<script>
+    $(".nav>li").each(function () {
+        var navItem = $(this);
+        if (navItem.find("a").attr("href") == location.pathname) {
+                navItem.addClass("active-v5");
+                $(this).parents("ul").parents("li").addClass("menu-is-opening menu-open") 
+        }
+    });
+</script>

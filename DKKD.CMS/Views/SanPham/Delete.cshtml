@@ -1,0 +1,40 @@
+﻿@model DKKD.MODELS.SanPham
+
+<div id="frmDelete" class="form-horizontal text-center">
+    <input type="hidden" value="@Model.ID" id="hdId" />
+    <i class="far fa-times-circle fa-2x" style="color:orangered"></i>
+    <h5 style="color:dimgrey" class="mt-4">XÓA DỮ LIỆU</h5>
+</div>
+<script>
+    var frmDelete = $('#frmDelete');
+    var take = 10;
+    var skip = 0;
+    $('#modal-delete').find('#btnDelete').off("click").on('click', function (e) {
+        e.preventDefault();
+        Delete();
+    });
+
+    function Delete() {
+        showLoading();
+        $.ajax({
+            url: url + "/delete-data",
+            method: "POST",
+            data: {
+                id: frmDelete.find('#hdId').val(),
+            }
+            , success: function (respose) {
+                hideLoading()
+                if (respose.result) {
+                    showAlert("Bạn đã xóa thành công", 2)
+                    var name = frmFilter.find('#txtName').val();
+                    var status = frmFilter.find('#drStatus').val();
+                    getData(name, status);
+                    hideDeleteModal()
+                }
+                else {
+                    showAlert(respose.messages)
+                }
+            }
+        })
+    }
+</script>

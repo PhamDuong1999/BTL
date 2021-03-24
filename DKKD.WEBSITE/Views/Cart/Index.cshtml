@@ -1,0 +1,202 @@
+﻿@using DKKD.MODELS;
+@using Microsoft.AspNetCore.Http
+@using Microsoft.Extensions.Configuration;
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IConfiguration _config
+@model List<CartItem>
+@{
+    var domain = _config["CMSDomain"].ToString();
+}
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="margin-top:50px">
+
+</div>
+<div class="space-medium">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                @{
+                    var i = 1;
+                    double tong = 0;
+                }
+                @if (Model.Count() == 0)
+                {
+                    <h3>Không có sản phẩm nào trong giỏ hàng.</h3>
+                }
+                else
+                {
+                    <table class="table" style="border:2px solid">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width:5%">#</th>
+                                <th scope="col" style="width:20%">Sản phẩm</th>
+                                <th scope="col" style="width:20%">Ảnh</th>
+                                <th scope="col" style="width:10%">Số lượng</th>
+                                <th scope="col" style="width:15%">Đơn giá</th>
+                                <th scope="col" style="width:15%">Thành tiền</th>
+                                <th scope="col" style="width:5%">---</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <th scope="row" style="width:5%">@i</th>
+                                    <td style="width:20%">@item.TenSP</td>
+                                    <td style="width:20%">
+                                        @{
+                                            var y = domain + item.Avatar;
+                                        }
+                                        <img src="@y" alt="@item.TenSP" />
+                                    </td>
+                                    <td style="width:10%">
+                                        <input style="width:50px" type="number" onclick="update(@item.MaSP,this.value)" min="1" value="@item.SoLuong" />
+                                    </td>
+                                    @{
+                                        int dongia = (int)item.DonGia;
+                                        string dg = String.Format("{0:0,00}", dongia);
+                                        int a = (int)item.ThanhTien;
+                                        string A = String.Format("{0:0,00}", a);
+
+                                    }
+                                    <td style="width:15%">@dg₫</td>
+                                    <td style="width:15%">@A₫</td>
+                                    <td style="width:5%">
+                                        <a asp-controller="Cart" asp-action="Remove" asp-route-id="@item.MaSP"><i class="fa fa-trash-o" title="Xóa sản phẩm"></i></a>
+                                    </td>
+                                </tr>
+                                i++;
+                                tong += item.ThanhTien;
+                            }
+
+                        </tbody>
+                    </table>
+                }
+                <div>
+                    <a href="/" class="btn btn-info"><i class="fa fa-reply"></i>Tiếp tục mua hàng</a>
+                </div>
+            </div>
+            <div class="col-lg-4" style="border: 2px solid #9ac9f8; border-radius: 5px; padding: 20px;">
+                <div class="row form-group">
+                    <div class="col-lg-5">
+                        <label>Tên khách hàng:</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="text" id="name"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-5">
+                        <label>Điện thoại:</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="number" id="sdt"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-5">
+                        <label>Địa chỉ:</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="text" id="dc"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-5">
+                        <label>Email:</label>
+
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="email" id="email"/>
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-5">
+                        <label>Ghi chú:</label>
+
+                    </div>
+                    <div class="col-lg-7">
+                        <textarea id="note"></textarea>
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-5">
+                        <label>Tổng tiền:</label>
+
+                    </div>
+                    <div class="col-lg-7">
+                        @{
+                            int tg = (int)tong;
+                            string tog = String.Format("{0:0,00}", tg);
+
+
+                        }
+                        <p>@tog₫</p>
+                    </div>
+                    <input type="hidden" value="@tong" id="tongtien"/>
+                </div>
+                <div style="float:right">
+                    <button type="button" id="checkout" class="btn btn-primary"><i class="fa fa-check"></i>Thanh toán</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#checkout").on("click", function () {
+            ThanhToan();
+        })
+    })
+    function ThanhToan() {
+        showLoading();
+        $.ajax({
+            url: "/Cart/Create",
+            method: "POST",
+            data: {
+                TenKH: $("#name").val(),
+                DiaChi: $("#dc").val(),
+                SDT: $("#sdt").val(),
+                Email: $("#email").val(),
+                Note: $("#note").val(),
+                TongTienTT:$("#tongtien").val()
+            },
+            success: function (rs) {
+                hideLoading();
+                if (rs.result == true) {
+                    showAlert(rs.message, 2);
+                    setTimeout(function () {
+                        window.location.href = '/';
+                    }, 1000);
+                } else {
+                    showAlert(rs.message);
+                }
+            }
+        })
+    }
+    function update(id, soluong) {
+        $.ajax({
+            url: "/Cart/Update/?id=" + id + "&soluong=" + soluong,
+            method: "POST",
+            data: {
+            },
+            success: function (rs) {
+                if (rs.result == true) {
+                    showAlert(rs.message, 2);
+                    setTimeout(function () {
+                        window.location.href = '/Cart';
+                    }, 1000);
+                    
+                } else {
+                    showAlert(es.message)
+                }
+            }
+        });
+    }
+</script>
